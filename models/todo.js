@@ -3,7 +3,7 @@ var mongoose = require('mongoose'),
 
 var TodoSchema = new Schema({
   id: Number,
-  description: {type: String, required: true, min:3, maxlength:10000},
+  description: {type: String, required: true, min:3, max:10000},
   faite: {type: Boolean, required: true},
   creator: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }
 });

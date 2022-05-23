@@ -40,9 +40,9 @@ async function createTodo(obj) {
 }
 
 const todo1 = createTodo({
-  description:"todo todo todo walki talki",
+  description: "todo todo todo walki talki",
   faite: false,
-  creator: 1
+  creator: 1,
 });
 
 Promise.all([p1]).then(async () => {
