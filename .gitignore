@@ -14,7 +14,7 @@
 .project
 .classpath
 .c9/
-/.env
+.env
 *.launch
 .settings/
 *.sublime-workspace
