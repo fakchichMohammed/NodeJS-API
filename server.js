@@ -1,123 +1,52 @@
-// require express and other modules
-var express = require('express'),
-    app = express(),
-    bodyParser = require('body-parser'),
-    mongoose = require('mongoose');
+const app = require("./backend/app");
+const debug = require("debug")("node-angular");
+const http = require("http");
 
-// configure bodyParser (for receiving form data)
-app.use(bodyParser.urlencoded({ extended: true }));
+const normalizePort = val => {
+  var port = parseInt(val, 10);
 
-// serve static files from public folder
-app.use(express.static(__dirname + '/public'));
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
 
-// set view engine to hbs (handlebars)
-app.set('view engine', 'hbs');
+  if (port >= 0) {
+    // port number
+    return port;
+  }
 
-// connect to mongodb
-mongoose.connect('mongodb://localhost/todo-app');
+  return false;
+};
 
-// require Todo model
-var Todo = require('./models/todo');
+const onError = error => {
+  if (error.syscall !== "listen") {
+    throw error;
+  }
+  const bind = typeof addr === "string" ? "pipe " + addr : "port " + port;
+  switch (error.code) {
+    case "EACCES":
+      console.error(bind + " requires elevated privileges");
+      process.exit(1);
+      break;
+    case "EADDRINUSE":
+      console.error(bind + " is already in use");
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+};
 
+const onListening = () => {
+  const addr = server.address();
+  const bind = typeof addr === "string" ? "pipe " + addr : "port " + port;
+  debug("Listening on " + bind);
+};
 
-// HOMEPAGE ROUTE
+const port = normalizePort(process.env.PORT || "3000");
+app.set("port", port);
 
-app.get('/', function (req, res) {
-  res.render('index');
-});
-
-
-// API ROUTES
-
-// get all todos
-app.get('/api/todos', function (req, res) {
-  // find all todos in db
-  Todo.find(function (err, allTodos) {
-    if (err) {
-      res.status(500).json({ error: err.message });
-    } else {
-      res.json({ todos: allTodos });
-    }
-  });
-});
-
-// create new todo
-app.post('/api/todos', function (req, res) {
-  // create new todo with form data (`req.body`)
-  var newTodo = new Todo(req.body);
-
-  // save new todo in db
-  newTodo.save(function (err, savedTodo) {
-    if (err) {
-      res.status(500).json({ error: err.message });
-    } else {
-      res.json(savedTodo);
-    }
-  });
-});
-
-// get one todo
-app.get('/api/todos/:id', function (req, res) {
-  // get todo id from url params (`req.params`)
-  var todoId = req.params.id;
-
-  // find todo in db by id
-  Todo.findOne({ _id: todoId }, function (err, foundTodo) {
-    if (err) {
-      if (err.name === "CastError") {
-        res.status(404).json({ error: "Nothing found by this ID." });
-      } else {
-        res.status(500).json({ error: err.message });
-      }
-    } else {
-      res.json(foundTodo);
-    }
-  });
-});
-
-// update todo
-app.put('/api/todos/:id', function (req, res) {
-  // get todo id from url params (`req.params`)
-  var todoId = req.params.id;
-
-  // find todo in db by id
-  Todo.findOne({ _id: todoId }, function (err, foundTodo) {
-    if (err) {
-      res.status(500).json({ error: err.message });
-    } else {
-      // update the todos's attributes
-      foundTodo.task = req.body.task;
-      foundTodo.description = req.body.description;
-
-      // save updated todo in db
-      foundTodo.save(function (err, savedTodo) {
-        if (err) {
-          res.status(500).json({ error: err.message });
-        } else {
-          res.json(savedTodo);
-        }
-      });
-    }
-  });
-});
-
-// delete todo
-app.delete('/api/todos/:id', function (req, res) {
-  // get todo id from url params (`req.params`)
-  var todoId = req.params.id;
-
-  // find todo in db by id and remove
-  Todo.findOneAndRemove({ _id: todoId }, function (err, deletedTodo) {
-    if (err) {
-      res.status(500).json({ error: err.message });
-    } else {
-      res.json(deletedTodo);
-    }
-  });
-});
-
-
-// listen on port 3000
-app.listen(3000, function() {
-  console.log('server started');
-});
+const server = http.createServer(app);
+server.on("error", onError);
+server.on("listening", onListening);
+server.listen(port);
