@@ -3,8 +3,8 @@ var mongoose = require('mongoose'),
 
 var TodoSchema = new Schema({
   id: number,
-  description: String,
-  faite: Boolean
+  description: {type: String, required: true, min:3, maxlength:10000},
+  faite: {type: Boolean, required: true}
 });
 
 var Todo = mongoose.model('Todo', TodoSchema);
