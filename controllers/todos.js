@@ -1,7 +1,7 @@
 const Todo = require("../models/todo")
 
 exports.createTodo = (req, res, next) => {
-  const url = req.protocol + "://" + req.get("host");
+  
   const todo = new Todo({
     description: req.body.description,
     faite: req.body.faite,
