@@ -3,17 +3,18 @@
   "version": "0.0.1",
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "body-parser": "^1.14.1",
+    "chai": "^3.4.0",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "express-async-errors": "^3.1.1",
     "joi": "^17.6.0",
     "joi-objectid": "^4.0.2",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.3.4",
-    "supertest": "^6.2.3",
-    "chai": "^3.4.0",
     "mocha": "^2.3.3",
-    "body-parser": "^1.14.1"
+    "mongoose": "^6.3.4",
+    "mongoose-unique-validator": "^3.0.0",
+    "supertest": "^6.2.3"
   },
   "devDependencies": {
     "jest": "^28.1.0"
