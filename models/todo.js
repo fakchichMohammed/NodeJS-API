@@ -4,7 +4,8 @@ var mongoose = require('mongoose'),
 var TodoSchema = new Schema({
   id: number,
   description: {type: String, required: true, min:3, maxlength:10000},
-  faite: {type: Boolean, required: true}
+  faite: {type: Boolean, required: true},
+  creator: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }
 });
 
 var Todo = mongoose.model('Todo', TodoSchema);
