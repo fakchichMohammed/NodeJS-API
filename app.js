@@ -2,6 +2,7 @@ const path = require("path");
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+require("dotenv").config({ path: "./.env" });
 
 const todosRoutes = require("./routes/todos");
 const userRoutes = require("./routes/user");
@@ -9,9 +10,7 @@ const userRoutes = require("./routes/user");
 const app = express();
 
 mongoose
-  .connect(
-    "mongodb+srv://mohammed:lUdlndW0c2udRKtB@cluster0.rlck1.mongodb.net/todos"
-  )
+  .connect(process.env.MONGO_ATLAS_PW)
   .then(() => {
     console.log("Connected to database!");
   })
