@@ -10,9 +10,7 @@ const app = express();
 
 mongoose
   .connect(
-    "mongodb+srv://max:" +
-      process.env.MONGO_ATLAS_PW +
-      "@cluster0-ntrwp.mongodb.net/node-angular"
+    "mongodb+srv://mohammed:lUdlndW0c2udRKtB@cluster0.rlck1.mongodb.net/todos"
   )
   .then(() => {
     console.log("Connected to database!");
@@ -21,6 +19,8 @@ mongoose
     console.log("Connection failed!");
   });
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");

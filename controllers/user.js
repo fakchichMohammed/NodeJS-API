@@ -1,12 +1,13 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+require('dotenv').config({path: './.env'});
 
 const User = require("../models/user");
 
 exports.createUser = (req, res, next) => {
   bcrypt.hash(req.body.password, 10).then((hash) => {
     const user = new User({
-      username: req.body.username,
+      // username: req.body.username,
       email: req.body.email,
       password: hash,
     });
@@ -36,6 +37,7 @@ exports.userLogin = (req, res, next) => {
         });
       }
       fetchedUser = user;
+      //console.log(bcrypt.compare(req.body.password, user.password)); 
       return bcrypt.compare(req.body.password, user.password);
     })
     .then((result) => {
